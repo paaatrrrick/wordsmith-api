@@ -2,7 +2,7 @@
 
 An AI powered writing assitants. Highlight text you wrote on any webpage and get rewrite to match you desired tone
 
-> Note: this only contains code for the backend, you can access the frontend here: [Wordsmith Front](https://github.com/paaatrrrick/wordsmith-client)
+> Note: this only contains code for the backend, you can access the frontend here: [Wordsmith Frontend](https://github.com/paaatrrrick/wordsmith-client)
 
 
 ## Use Live
