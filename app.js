@@ -40,7 +40,8 @@ const firebaseAuth = getAuth(firebaseApp);
 const DB_URL = process.env.DB_URL;
 const DB_DEFAULT = 'mongodb://0.0.0.0:27017/wordsmith';
 const currentUrl = DB_URL;
-const isTesting = false;
+const isTesting = true;
+var pagesviews = 0;
 
 mongoose.set('strictQuery', true);
 mongoose.connect(currentUrl, {
@@ -79,7 +80,12 @@ app.get('/auth/isLoggedIn', isLoggedIn, catchAsync(async (req, res, next) => {
     res.status(200).send({ message: 'successful login' });
 }));
 
-
+app.get('/magic-the-gathering', catchAsync(async (req, res, next) => {
+    console.log('we have been hit at magic the gathering');
+    pagesviews += 1;
+    console.log('pagesviews: ', pagesviews);
+    res.send('magic!');
+}));
 
 
 app.post('/auth/signup-email', catchAsync(async (req, res, next) => {
@@ -140,12 +146,13 @@ app.post('/auth/google', catchAsync(async (req, res, next) => {
 
 
 app.post('/chrome/workmagic', isLoggedIn, catchAsync(async (req, res, next) => {
+    console.log('we have been hit');
     if (!isTesting) {
         const text = req.body.text;
         const pills = req.body.pills;
         let prompt = "Rewrite the following text exactly the same but it";
         if (pills.length === 1) {
-            prompt += ` ${pills[0].aiTextPrompt}:`;
+            prompt += `${pills[0].aiTextPrompt}:`;
         } else {
             console.log('second');
             for (let i = 0; i < pills.length; i++) {
