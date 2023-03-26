@@ -40,7 +40,7 @@ const firebaseAuth = getAuth(firebaseApp);
 const DB_URL = process.env.DB_URL;
 const DB_DEFAULT = 'mongodb://0.0.0.0:27017/wordsmith';
 const currentUrl = DB_URL;
-const isTesting = true;
+const isTesting = false;
 var pagesviews = 0;
 
 mongoose.set('strictQuery', true);
