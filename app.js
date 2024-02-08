@@ -62,13 +62,9 @@ app.use(cors());
 app.use(cookieParser());
 
 
-const { Configuration, OpenAIApi } = require("openai");
+const OpenAI = require("openai");
 
-//apiKey: process.env.openAI,
-const configuration = new Configuration({
-    apiKey: process.env.openAI,
-});
-const openai = new OpenAIApi(configuration);
+const openai = new OpenAI();
 
 //set max age of cookie to -1 for logout
 
@@ -108,8 +104,6 @@ app.post('/auth/signup-email', catchAsync(async (req, res, next) => {
             res.status(500).send({ message: error.message });
         });
 }));
-
-
 
 app.post('/auth/login-email', catchAsync(async (req, res, next) => {
     const { email, password } = req.body;
@@ -168,16 +162,12 @@ app.post('/chrome/workmagic', isLoggedIn, catchAsync(async (req, res, next) => {
         prompt += ` ${text}`;
         console.log('about to send request');
         console.log(prompt);
-        const response = await openai.createCompletion({
-            model: "text-davinci-003",
-            prompt: prompt,
-            temperature: 0,
-            max_tokens: 300,
-            top_p: 1,
-            frequency_penalty: 0,
-            presence_penalty: 0,
+        const completion = await openai.chat.completions.create({
+            messages: [{"role": "system", "content": "You are a helpful assistant."},
+                    {"role": "user", "content": prompt}],
+            model: "gpt-3.5-turbo",
         });
-        var responseText = response.data.choices[0].text;
+        var responseText = completion.choices[0].message.content;
         console.log(responseText);
         responseText = responseText.replace(/(\r\n|\n|\r)/gm, "");
         const userId = res.userId;
